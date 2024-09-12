@@ -1,0 +1,23 @@
+@startuml
+actor User
+
+User -> Main: main()
+Main -> Scanner: new Scanner(System.in)
+User -> Main: choose option
+Main -> Scanner: nextInt()
+Main -> Main: durations[] = {1s, 1m, 1h}
+Main -> Main: timeLimit = choose >= 1 && choose <= 3 ? durations[choose - 1] : 0
+
+alt Invalid choice
+    Main -> User: Invalid choice message
+    return
+else Valid choice
+    Main -> User: Display maximum values
+    Main -> Main: findMax(timeLimit, log)
+    Main -> Main: findMax(timeLimit, n^2)
+    Main -> Main: findMax(timeLimit, n^3)
+    Main -> Main: findMax(timeLimit, sqrt)
+end
+
+Main -> System: exit
+@enduml

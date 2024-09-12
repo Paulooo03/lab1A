@@ -1,135 +1,38 @@
-import java.lang.Math;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-       //logarithmic function
+        Scanner option = new Scanner(System.in);
+        System.out.println("Time:");
+        System.out.println("1. 1 second");
+        System.out.println("2. 1 minute");
+        System.out.println("3. 1 hour");
+        System.out.print("Choose: ");
+        int choose = option.nextInt();
 
-        long logstart = System.nanoTime();
-        long secDuration = 1000000000L;
-        long minDuration = 60000000000L;
-        long hourDuration = 3600000000000L;
+        long[] durations = {1_000_000_000L, 60_000_000_000L, 3_600_000_000_000L};
+        long timeLimit = choose >= 1 && choose <= 3 ? durations[choose - 1] : 0;
 
-        //1 second
-        for (double i = 1; ; i++){
-            double log = Math.log(i);
-
-            long seccurrentLog = System.nanoTime();
-            if(seccurrentLog - logstart >= secDuration){
-                System.out.println("1 second logarithm: " + log);
-                break;
-            }
-        }
-        //1 minute
-        for (double j = 1; ; j++){
-            double log = Math.log(j);
-            long mincurrentLog = System.nanoTime();
-            if(mincurrentLog - logstart >= minDuration){
-                System.out.println("1 minute logarithm: " + log);
-                break;
-            }
-        }
-        //1 hour
-        for (double k = 1; ; k++){
-            double loghour = Math.log(k);
-            long hourCurrentLog = System.nanoTime();
-            if(hourCurrentLog - logstart >= hourDuration){
-                System.out.println("1 hour logarithm: " + loghour);
-                break;
-            }
+        if (timeLimit == 0) {
+            System.out.println("Invalid choice");
+            return;
         }
 
-        //n ^ 2
-        long n2Start = System.nanoTime();
-        //1 second
-        for (long i = 1; ; i++){
-            long n2 = i ^ 2;
-            long secCurrentn2 = System.nanoTime();
-            if(secCurrentn2 - n2Start >= secDuration){
-                System.out.println("1 second n2: " + n2);
-                break;
-            }
-        }
-        //1 minute
-        for (long j = 1; ; j++){
-            long n2 = j ^ 2;
-            long minCurrentn2 = System.nanoTime();
-            if (minCurrentn2 - n2Start >= minDuration){
-                System.out.println("1 minute n2: " + n2);
-                break;
-            }
-        }
+        System.out.println("Maximum values computed in " +
+                (choose == 1 ? "1 second" : choose == 2 ? "1 minute" : "1 hour") + ":");
 
-        //1 hour
-        for (long k = 1; ; k++){
-            long hourn2 = k ^ 2;
-            long hourCurrentn2 = System.nanoTime();
-            if(hourCurrentn2 - n2Start >= hourDuration){
-                System.out.println("1 hour n2: " + hourn2);
-                break;
-            }
-        }
+        System.out.println("Logarithm: " + findMax(timeLimit, n -> Math.log(n)));
+        System.out.println("n^2: " + findMax(timeLimit, n -> Math.pow(n, 2)));
+        System.out.println("n^3: " + findMax(timeLimit, n -> Math.pow(n, 3)));
+        System.out.println("Square root: " + findMax(timeLimit, n -> Math.sqrt(n)));
+    }
 
-        //n ^ 3
-        long n3Start = System.nanoTime();
-        //1 second
-        for (long i = 1; ; i++){
-            long n3 = i ^ 3;
-            long secCurrentn3 = System.nanoTime();
-            if(secCurrentn3 - n3Start >= secDuration){
-                System.out.println("1 second n3: " + n3);
-                break;
-            }
+    private static long findMax(long timeLimit, java.util.function.DoubleUnaryOperator operation) {
+        long startTime = System.nanoTime();
+        long n = 0;
+        while (System.nanoTime() - startTime < timeLimit) {
+            operation.applyAsDouble(++n);
         }
-
-        //1 minute
-        for (long j = 1; ; j++){
-            long n3 = j ^ 3;
-            long minCurrentn3 = System.nanoTime();
-            if (minCurrentn3 - n3Start >= minDuration){
-                System.out.println("1 minute n3: " + n3);
-                break;
-            }
-        }
-
-        //1 hour
-        for (long k = 1; ; k++){
-            long hourn3 = k ^ 3;
-            long hourCurrentn3 = System.nanoTime();
-            if(hourCurrentn3 - n3Start >= hourDuration){
-                System.out.println("1 hour n3: " + hourn3);
-                break;
-            }
-        }
-
-        //square root function
-        long sqrtStart = System.nanoTime();
-        //1 second
-        for (long i = 1; ; i++){
-            long squareRoot = (long) Math.sqrt(i);
-            long secCurrentsqrt = System.nanoTime();
-            if(secCurrentsqrt - sqrtStart >= secDuration){
-                System.out.println("1 second square root: " + squareRoot);
-                break;
-            }
-        }
-
-        //1 minute
-        for (long j = 1; ; j++){
-            long squareRootMin = (long) Math.sqrt(j);
-            long minCurrentsqrt = System.nanoTime();
-            if(minCurrentsqrt - sqrtStart >= minDuration){
-                System.out.println("1 minute square root: " + squareRootMin);
-                break;
-            }
-        }
-
-        //1 hour
-        for (long k = 1; ; k++){
-            long hoursqrt = (long) Math.sqrt(k);
-            long hourCurrentsqrt = System.nanoTime();
-            if(hourCurrentsqrt - sqrtStart >= hourDuration){
-                System.out.println("1 hour square root: " + hoursqrt);
-                break;
-            }
-        }
+        return n - 1;
     }
 }
